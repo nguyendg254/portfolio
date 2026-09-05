@@ -12,6 +12,7 @@ created: 2026-09-02
 - **Interests:** Social computing (how platform design shapes user behaviour), online social conformity and group dynamics, online safety and technology-facilitated abuse, inclusive design for vulnerable/at-risk users, crowdsourcing and algorithmic fairness
 - **Active projects:** ARC DECRA (2026-2029) "Protecting Australia from Online Abuse" - preventive safety features for vulnerable Australians; ACCAN (2024-2026) co-designed safety strategies for women/gender-diverse users; ACDICT (2024) inclusive cybersecurity curricula
 - **Availability:** Actively recruiting PhD students on online safety for at-risk groups; already supervising 7 PhD students
+- **Link:** [RMIT academic profile](https://academics.rmit.edu.au/senuri-wijenayake/about), [personal site](https://www.senuriwijenayake.com/#about)
 
 ## CV Highlights
 
