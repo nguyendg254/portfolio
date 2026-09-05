@@ -11,6 +11,7 @@ created: 2026-08-23
 - **Position:** Associate Professor in Cyber Security, School of Computing Technologies, RMIT University; Group Leader, Human-Centred Cyber Security Research Group (RMIT Centre for Cyber Security Research and Innovation)
 - **Interests:** Human-centred cybersecurity and privacy, HCI, user behaviour/cognition/risk perception, AI/ML/NLP and responsible AI security, AI-driven deception and misinformation, serious games and cybersecurity education, usable security and software engineering
 - **Active projects:** Human-Centric Email Phishing Risk Assessment; Enhancing Online Safety for Older Adults: Understanding and Preventing Scam Victimisation Through Mixed-Methods Research; Combating AI-Mediated Social Engineering: Simulate, Defend, and Mitigate; Designing Inclusive and Intelligent Cybersecurity Literacy Tools; Security training and its effects on team trust and intention to violate security protocols
+- **Link:** [RMIT academic profile](https://academics.rmit.edu.au/nalin-arachchilage/about), [RMIT staff profile](https://www.rmit.edu.au/profiles/g/nalin-arachchilage)
 
 ## CV Highlights
 

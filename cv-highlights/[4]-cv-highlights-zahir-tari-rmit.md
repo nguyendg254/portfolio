@@ -11,6 +11,7 @@ created: 2026-08-24
 - **Position:** Professor, School of Computing Technologies, RMIT University; Research Director, RMIT Centre for Cyber Security Research and Innovation (CCSRI)
 - **Interests:** Cybersecurity, performance/scalability/reliability of large-scale systems, cloud/edge/IoT computing, anomaly detection and intrusion prevention, critical infrastructure security (SCADA, smart grids), data-exfiltration prevention, blockchain security
 - **Active projects:** Federated learning for heterogeneous edge networks; deep learning for fraud detection in digital payments; anomaly detection in dynamic networks; blockchain consensus protocols and security; energy-efficient and secure blockchain systems; smart grid cybersecurity frameworks
+- **Link:** [RMIT staff profile](https://www.rmit.edu.au/profiles/t/zahir-tari)
 
 ## CV Highlights
 

@@ -11,6 +11,7 @@ created: 2026-08-23
 - **Position:** Associate Professor, Department of Data Science & AI, Monash University; Founding co-director, AiLECS Research Centre (AI for Law Enforcement and Community Safety)
 - **Interests:** Digital forensics, information retrieval, machine learning, bioinformatics, AI for law enforcement and community safety (technical and socio-technical perspectives)
 - **Active projects:** Research on child sexual abuse material (CSAM) prosecutions; threat detection in temporal networks; institutional responses to online exploitation
+- **Link:** [Monash research profile](https://research.monash.edu/en/persons/campbell-wilson/)
 
 ## CV Highlights
 
