@@ -27,7 +27,7 @@ Institutions differ in customers, feature schema, label definitions, and class b
 
 2. **Privacy.**
 
-Sharing node features or an interclient graph to repair local graphs can leak other clients' private information (Liu et al., 2025), and model weights may still leak (He et al., 2021). FedGAD (Fang et al., 2026) passes node embeddings through the server for cross-client reconstruction and reports no leakage analysis.
+Sharing an interclient graph to repair local graphs may leak other clients' private information (Liu et al., 2025), and model weights may still leak (He et al., 2021). FedGAD (Fang et al., 2026) passes node embeddings through the server for cross-client reconstruction and reports no leakage analysis.
 
 3. **Rare topologies.**
 
@@ -52,7 +52,7 @@ Gap status and methods are judged only against the reviewed papers. A full-text 
 
 #### Support, focus on privacy
 
-- **Gap status: not found as a formal result.** None of the closest papers measures leakage from shared structure. Closest evidence: FedGAD, FedStar, Ghourabi & Khaldi (2026).
+- **Gap status: partly covered.** Yang et al. (2026) measure edge inference in federated GNNs, but only for a poisoning client, on citation, author and movie benchmark graphs. Leakage from the quantities shared here, on fraud graphs, and its privacy-versus-accuracy cost are not found as a result. Closest evidence: Yang et al. (2026), FedGAD, FedStar, Ghourabi & Khaldi (2026).
 - **Why it matters.** "No raw data shared" is the setting's premise; an unmeasured privacy claim can break that premise.
 
 ### RQ 3: Can the model detect fraud whose network structure is rare within and across institutions?
@@ -102,18 +102,19 @@ Closest prior works and their overlap: FedGAD (direct overlap, banks used only a
 
 ### RQ 2: Privacy: controlled sharing
 
-Only the structure encoder, prototypes, and gradients cross institution boundaries, and each is measured for leakage; privacy is a constraint on the method, not a separate contribution.
+Only the structure encoder, prototypes, and gradients cross institution boundaries, and each is measured for leakage; privacy is a constraint on the method, not a separate contribution. The threat model is an honest-but-curious institution that follows the agreed training procedure and tries to infer other institutions' relationships from what it receives. Yang et al. (2026) instead study a poisoning client that breaks the protocol. That attack falls outside this threat model.
 
 In the entity alignment extension, the matching step is part of this boundary and must state what crosses it (node embeddings, edge aggregates, or gradients). FedCAD shows the dependency: its cross-client swap works only for nodes identified on both clients, and uploading pseudo-labels with node positions tells the server which nodes each client considers anomalous (Kong et al., 2025). One candidate is matching on hashed, salted identifiers within a consortium, which needs a re-identification check before use (personal inference).
 
 | Shared quantity | Attack | Why |
 |---|---|---|
-| Structure encoder parameters | Edge inference | Weights may leak (He et al., 2021) |
+| Structure encoder parameters | Edge inference | Weights may leak (He et al., 2021). Yang et al.'s white-box attacker sees the global parameters but not other clients' updates |
 | Causal GNN weights (FedATH-style) | Edge inference | The only uploaded component in Fu et al. (2025), which reports no leakage analysis |
 | Prototypes | Membership or edge inference | Fraud prototypes rest on few labels and may be re-identifying (personal inference) |
-| Gradients | Edge inference | Same exposure as the weights they update (personal inference) |
+| Gradients | Edge inference | Same exposure as the weights they update (personal inference). Yang et al.'s attacker sees only its own updates |
+| Global model outputs and parameters | Edge inference by a poisoning client | Yang et al. (2026) recover cross-client links on benchmark graphs; poisoning detectors only partly stop it |
 | FedCAD-style pseudo-labels and flagged-node neighbour embeddings | Membership or edge inference | Reveal which nodes a client flags; Kong et al. (2025) report no leakage analysis |
-| FedGAD-style cross-client embeddings | Edge inference | Interclient information may leak (Liu et al., 2025) |
+| FedGAD-style cross-client embeddings | Edge inference | Liu et al. (2025) say an interclient graph may leak; for embeddings this is untested (personal inference) |
 
 ### RQ 3: Rare topologies: reliability-grouped prototype exchange
 
@@ -224,10 +225,10 @@ Milestones are a proposal to be edited.
 1. Al Tfaily, F., Ghalmane, Z., Brahmia, M. el A., Hazimeh, H., Jaber, A., & Zghal, M. (2025). Graph-based federated learning approach for intrusion detection in IoT networks (FedGATSage). *Scientific Reports*, 15, 41264. https://doi.org/10.1038/s41598-025-25175-1
 2. Chen, Y., Zhang, K., Zhu, H., & Qiu, Z. (2025). A novel federated transfer learning framework for credit card fraud detection (FED-SPFD). *Risks*, 13(11), 208. https://doi.org/10.3390/risks13110208
 3. Fang, H., Gao, Y., Zhang, P., Zhou, S., Chen, H., Bu, J., & Wang, H. (2026). Contrastive federated learning for graph anomaly detection (FedGAD). *IEEE Transactions on Neural Networks and Learning Systems*, 37(1). https://doi.org/10.1109/TNNLS.2025.3601449
-4. Fu, L., Deng, B., Huang, S., Liao, T., Pan, S., & Chen, C. (2025). Less is more: Federated graph learning with alleviating topology heterogeneity from a causal perspective (FedATH). *ICML 2025*, PMLR 267. https://proceedings.mlr.press/v267/fu25a.html (URL constructed from PMLR volume and file name; not fetched)
+4. Fu, L., Deng, B., Huang, S., Liao, T., Pan, S., & Chen, C. (2025). Less is more: Federated graph learning with alleviating topology heterogeneity from a causal perspective (FedATH). *ICML 2025*, PMLR 267. https://proceedings.mlr.press/v267/fu25a.html
 5. Ghourabi, A., & Khaldi, K. (2026). A federated ensemble learning framework for distributed fraud detection. *Applied Sciences*, 16(9), 4508. https://doi.org/10.3390/app16094508
 6. He, C., Balasubramanian, K., Ceyani, E., Yang, C., Xie, H., Sun, L., He, L., Yang, L., Yu, P. S., Rong, Y., Zhao, P., Huang, J., Annavaram, M., & Avestimehr, S. (2021). FedGraphNN: A federated learning benchmark system for graph neural networks. arXiv:2104.07145. https://arxiv.org/abs/2104.07145
-7. Johannessen, F., & Jullum, M. (2025). Finding money launderers using heterogeneous graph neural networks. *The Journal of Finance and Data Science*, 11, 100175. https://doi.org/10.1016/j.jfds.2025.100175 (preprint: arXiv:2307.13499, 2023, full text read; journal metadata from Crossref, 2026-10-15; journal version not read).
+7. Johannessen, F., & Jullum, M. (2025). Finding money launderers using heterogeneous graph neural networks. *The Journal of Finance and Data Science*, 11, 100175. https://doi.org/10.1016/j.jfds.2025.100175 (preprint: arXiv:2307.13499, 2023).
 8. Kong, X., Zhang, W., Wang, H., Hou, M., Chen, X., Yan, X., & Das, S. K. (2025). Federated graph anomaly detection via contrastive self-supervised learning (FedCAD). *IEEE Transactions on Neural Networks and Learning Systems*, 36(5), 7931. https://doi.org/10.1109/TNNLS.2024.3414326
 9. Lamptey, K. O., Ayekai, B. J., & Din, S. U. (2025). Federated learning on multilabel evolving data streams (FedMuL). *IEEE Internet of Things Journal*, 12(20). https://doi.org/10.1109/JIOT.2025.3592954
 10. Li, E., Ouyang, J., Xiang, S., Qin, L., & Chen, L. (2025a). Efficient relation-aware heterogeneous graph neural network for fraud detection. *World Wide Web*, 28, 55. https://doi.org/10.1007/s11280-025-01369-5
@@ -240,5 +241,6 @@ Milestones are a proposal to be edited.
 17. Tan, Y., Liu, Y., Long, G., Jiang, J., Lu, Q., & Zhang, C. (2023). Federated learning on non-IID graphs via structural knowledge sharing (FedStar). *AAAI-23*, 9953. https://doi.org/10.1609/aaai.v37i8.26187
 18. Wang, H., Li, Z., Huang, J., Hui, P., Liu, W., Hu, T., & Chen, G. (2020). Collaboration based multi-label propagation for fraud detection (CMLP). *IJCAI-20*, 2477. https://doi.org/10.24963/ijcai.2020/343
 19. Xiang, S., Zhu, M., Cheng, D., Li, E., Zhao, R., Ouyang, Y., Chen, L., & Zheng, Y. (2023). Semi-supervised credit card fraud detection via attribute-driven graph representation. *AAAI-23*. https://doi.org/10.1609/aaai.v37i12.26702
-20. Zhang, C., Gill, A. Q., Liu, B., & Anwar, M. (2026). AI-based identity fraud detection: A systematic review. *Applied Artificial Intelligence*, 40(1), e2731995. https://doi.org/10.1080/08839514.2026.2731995
-21. Zheng, S., Liu, W., Ji, J., Wong, K.-C., Chen, J., & Lin, Q. (2026). Robust federated intrusion detection via prototype distillation (FedProD). *Knowledge-Based Systems*, 352, 117028. https://doi.org/10.1016/j.knosys.2026.117028
+20. Yang, G., Zhang, Y., Zhang, L. Y., Ge, M., & Gao, S. (2026). Poisoning-based link inference attacks against federated graph neural networks. *Proceedings on Privacy Enhancing Technologies*, 2026(2), 157-179. https://doi.org/10.56553/popets-2026-0042
+21. Zhang, C., Gill, A. Q., Liu, B., & Anwar, M. (2026). AI-based identity fraud detection: A systematic review. *Applied Artificial Intelligence*, 40(1), e2731995. https://doi.org/10.1080/08839514.2026.2731995
+22. Zheng, S., Liu, W., Ji, J., Wong, K.-C., Chen, J., & Lin, Q. (2026). Robust federated intrusion detection via prototype distillation (FedProD). *Knowledge-Based Systems*, 352, 117028. https://doi.org/10.1016/j.knosys.2026.117028

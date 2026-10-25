@@ -25,11 +25,11 @@ Reported defence robustness cannot be compared across papers, is rarely tested a
 
 1. **Not comparable, no spread.**
 
-Each paper picks its own detector, data, perturbation budget and attacker. The budget is ε = 16/255 in Hussain et al. (2021), 9/255 in Serrano et al. (2026) and ℓ2 = 10 in Hooda et al. (2023), who test each attack on only 100 images. None of Hooda, Hussain, Neekhara, Kawa (audio, not faces) or Serrano reports an interval or standard deviation for ASR or equal error rate (EER), and Xia et al. (2024) gives only single numbers. Abbasi et al. (2025) try one weak attack (fast gradient sign method, FGSM, ε = 0.01) with no defence and no spread; accuracy falls by 8.6-11.2 points across four detectors. Training on one dataset and testing on another (e.g. FF++ → Celeb-DF version 2 (Celeb-DF-V2), DeepFake Detection dataset (DFD) and DFDC) is the standard benign protocol (Peng et al., 2025).
+Each paper picks its own detector, data, perturbation budget and attacker. The budget is ε = 16/255 in Hussain et al. (2021), 9/255 in Serrano et al. (2026) and ℓ2 = 10 in Hooda et al. (2023), who test each attack on only 100 images. None of Hooda, Hussain, Neekhara, Kawa (audio, not faces) or Serrano reports an interval or standard deviation for ASR or equal error rate (EER), and Xia et al. (2024) gives only single numbers. Zhang et al. (2026) report F1 only, from one attack (run count not stated), with no ε sweep or interval. Abbasi et al. (2025) try one weak attack (fast gradient sign method, FGSM, ε = 0.01) with no defence and no spread; accuracy falls by 8.6-11.2 points across four detectors. Training on one dataset and testing on another (e.g. FF++ → Celeb-DF version 2 (Celeb-DF-V2), DeepFake Detection dataset (DFD) and DFDC) is the standard benign protocol (Peng et al., 2025).
 
 2. **The attack is rarely built around the defence.**
 
-Serrano et al. (2026) experiments on undefended surrogates, so the defence is never attacked; Kawa et al. (2023, audio) do not say whether theirs were regenerated against the fine-tuned model. Jia et al. (2025) give mostly gray-box tables and one adaptive table (backward pass differentiable approximation (BPDA) with EOT, ε = 2/255; steps and samples unstated). Closest is Xia et al. (2024): an attack aware of the decoy raises the AutoAttack (AA) success rate from 8.21% to 35.46%, and raises it for two other attacks, but lowers it for FGSM and PGD-40; it is tested at one ε and on the fine stage only.
+Serrano et al. (2026) experiments on undefended surrogates, so the defence is never attacked; Zhang et al. (2026) test 17 preprocessing pipelines against one attack, StatAttack (fixed degradations, not built around the defence), and list BPDA/EOT as future work; Kawa et al. (2023, audio) do not say whether theirs were regenerated against the fine-tuned model. Jia et al. (2025) give mostly gray-box tables and one adaptive table (backward pass differentiable approximation (BPDA) with EOT, ε = 2/255; steps and samples unstated). Closest is Xia et al. (2024): an attack aware of the decoy raises the AutoAttack (AA) success rate from 8.21% to 35.46%, and raises it for two other attacks, but lowers it for FGSM and PGD-40; it is tested at one ε and on the fine stage only.
 
 3. **What makes robustness transfer is untested.**
 
@@ -45,7 +45,7 @@ Gap status and methods are judged only against the papers reviewed; a literature
 
 - **Approach.** For each defence, run the attack with the defended system in the attacker's loop and report the gap to the defence-unaware ASR, using the worst case over several such attacks.
 - **Gap status.**
-  - *Attack built around the defence on a face-forgery detector:* **partly covered.** Xia et al. (2024): decoy-aware, fine stage only. Jia et al. (2025) also attack the Inspector with an adaptive attack (BPDA+EOT) and it does worse than their purifier, but they do not say whether the attack passes through the coarse stage. No hard-label or coarse-stage-aware attack found. Why it matters: a defence tested only on undefended-detector attacks gives a lower bound on vulnerability, not evidence of robustness (personal inference).
+  - *Attack built around the defence on a face-forgery detector:* **partly covered.** Xia et al. (2024): decoy-aware, fine stage only. Jia et al. (2025) also attack the Inspector with an adaptive attack (BPDA+EOT) and it does worse than their purifier, but they do not say whether the attack passes through the coarse stage. No hard-label or coarse-stage-aware attack found. For preprocessing defences, Jia et al. (2025) is the only defence-aware test found; Zhang et al. (2026) have none. Why it matters: a defence tested only on undefended-detector attacks gives a lower bound on vulnerability, not evidence of robustness (personal inference).
   - *Add-on defence against AT and ensembles on one grid:* **not found yet.** Why it matters: without one grid, defences cannot be ranked.
 
 ### RQ 2: Under a stated threat model, how large is the robustness gap, with what uncertainty, and how much does it move with attacker type, ε and test-set size?
@@ -74,12 +74,12 @@ One grid for experiments: detector × defence × attacker × ε × shift. RQ 2 r
 | Factor | Levels |
 |---|---|
 | Detector | One or two face-forgery architectures (Xception: Hussain et al., 2021; Serrano et al., 2026; Xia et al., 2024) |
-| Defence | None; AT (Serrano et al., 2026); disjoint-ensemble deepfake defence (D4), a frequency-partitioned ensemble (Hooda et al., 2023); Inspector for face forgery detection (Xia et al., 2024); preprocessing (Abed et al., 2025); masked conditional diffusion model (MCDM) purification (Jia et al., 2025) |
+| Defence | None; AT (Serrano et al., 2026); disjoint-ensemble deepfake defence (D4), a frequency-partitioned ensemble (Hooda et al., 2023); Inspector for face forgery detection (Xia et al., 2024); preprocessing (Abed et al., 2025; Zhang et al., 2026: Gaussian blur + sharpen, JPEG + rescale); masked conditional diffusion model (MCDM) purification (Jia et al., 2025) |
 | Attacker | White-box projected gradient descent (PGD) (worst case); hard-label query (SurFree, HopSkipJump attack (HSJA); Hooda et al., 2023); score-based query (natural evolution strategies (NES); Hussain et al., 2021); transfer from a surrogate (Neekhara et al., 2020), including ensemble-gradient and momentum transfer and latent-space inversion, where all were tested on undefended detectors only (Battiato et al., 2025). A blind-detector protocol, where the attacker never sees the evaluated detector (Battiato et al., 2025: a ViT-B-16 and a DCT-feature DenseNet121 withheld), is a held-out-detector level |
 | ε / budget | ε sweep; query budget for query attackers |
 | Shift | Clean; H.264 video codec (Hussain et al., 2021); JPEG and blur (Hooda et al., 2023); FF++ compression level 23 (C23) → compression level 40 (C40) (Peng et al., 2025, Table 11); FF++ → Celeb-DF-V2 (Serrano et al., 2026) |
 
-Which attacker is realistic depends on what the system exposes, so the grid compares them rather than assuming one. All defences are re-implemented on face data; D4's published results are on non-face images.
+Which attacker is realistic depends on what the system exposes, so the grid compares them rather than assuming one. All defences are re-implemented on face data; D4's published results are mostly on non-face images.
 
 ### RQ 1 (core): defence-aware attacks
 
@@ -94,9 +94,9 @@ Attack built around each defence (general adversarial-ML practice):
 | Defence | Attack built around it | Closest prior work |
 |---|---|---|
 | AT | Regenerate against the fine-tuned weights; more steps and restarts; different loss or norm than in training | Serrano et al. (2026): surrogate-crafted only |
-| D4 ensemble | Target the combined decision (minimum margin over members); split budget across partitions | Hooda et al. (2023): generic attacks on diffusion-generated bedroom images, not faces; an appendix gradient attack on a CIFAR10 version breaks D4 almost completely (the single-model baseline breaks too) |
+| D4 ensemble | Target the combined decision (minimum margin over members); split budget across partitions | Hooda et al. (2023): generic attacks, mostly on diffusion-generated bedroom images (one transfer test to faces); an appendix gradient attack on a CIFAR10 version breaks D4 almost completely (the single-model baseline breaks too) |
 | Inspector | Its decoy-aware reciprocal objective (Xia et al., Eq. 12) as baseline; a joint objective over the coarse score and the flip; a query attack against the combined output | Xia et al. (2024): one ε, fine stage only; Jia et al. (2025) run BPDA+EOT against it, coarse-stage handling unstated |
-| Preprocessing or purification | EOT (Hussain et al., 2021); for a stochastic purifier, BPDA+EOT as in Jia et al. (2025, Table 3), with steps and samples reported | Jia et al. (2025): purifier trained on the attack families it is tested on; identity preservation untested |
+| Preprocessing or purification | EOT (Hussain et al., 2021); for a stochastic purifier, BPDA+EOT as in Jia et al. (2025, Table 3), with steps and samples reported; for fixed pipelines, direct gradients through blur, sharpen and rescale, and BPDA with an identity backward pass for JPEG | Jia et al. (2025): purifier trained on the attack families it is tested on; identity preservation untested. Zhang et al. (2026): StatAttack only, defence-unaware |
 
 ![Figure 2. Attack built around each defence](figures/fig2_per_defence_attacks.png)
 
@@ -160,14 +160,15 @@ Low ASR under a weak attack is a lower bound on vulnerability, not evidence of r
 
 ### RQ 1
 
-- **Metrics.** Worst-case ASR over defence-aware attacks, because an average would hide the strongest attacker; the gap to the RQ 2 ASR for the same defence; clean accuracy and latency per defence, as the cost of the defence; false-reject rate on real images alongside ASR on fakes, because robust accuracy on forged images alone (Jia et al., 2025, Sec. 4.1.5) can rise when more images are labelled fake, and for fraud a rejected legitimate customer is a cost.
+- **Metrics.** Worst-case ASR over defence-aware attacks, because an average would hide the strongest attacker; the gap to the RQ 2 ASR for the same defence; clean accuracy and latency per defence, as the cost of the defence; false-reject rate on real images alongside ASR on fakes, because robust accuracy on forged images alone (Jia et al., 2025, Sec. 4.1.5) can rise when more images are labelled fake, and for fraud a rejected legitimate customer is a cost. Some preprocessing can wreck clean accuracy (JPEG + sharpen: clean F1 0.15 on XceptionNet, FF++; Zhang et al., 2026).
 - **Data.** FF++ for training, Celeb-DF-V2 held out.
 
 | Defence | Defence-unaware (reported) | Defence-aware (reported) | Source |
 |---|---|---|---|
 | Inspector, Xception, AA, ε = 2/255 | 3.43% ASR; 8.21% when attacking the forgery detector alone | 35.46% when the attack targets the Inspector's outputs; 44.13% when attacking detector plus Inspector together | Xia et al. (2024). The paper does not explain why its two defence-unaware numbers differ. With the decoy mechanism removed the Inspector fails (99.67%), but that tests the defence's design, not a stronger attacker |
 | MCDM purifier, robust accuracy (ResNet-50 / Xception / EfficientNet-b0) | Gray-box tables | 84.34 / 80.12 / 78.45 under BPDA+EOT, ε = 2/255 (Table 3) | Jia et al. (2025); steps and samples unstated |
-| D4(4) ensemble, CIFAR10 version | None reported | Generic hard-label queries on the defended detectors (defence-aware, not built around the defence; diffusion images, Table 1): D4(4) ASR 0-28%; adversarially robust deepfake detection with adversarial training (ARDD-AT) 18-97%. Gradient attack (APGD-CE) on the CIFAR10 version: accuracy 0-8.2% at ℓ∞ ≥ 4/255, ℓ2 ≥ 5 | Hooda et al. (2023); neither dataset is faces |
+| D4(4) ensemble, CIFAR10 version | None reported | Generic hard-label queries on the defended detectors (defence-aware, not built around the defence; diffusion images, Table 1): D4(4) ASR 0-28%; adversarially robust deepfake detection with adversarial training (ARDD-AT) 18-97%. Gradient attack (APGD-CE) on the CIFAR10 version: accuracy 0-8.2% at ℓ∞ ≥ 4/255, ℓ2 ≥ 5 | Hooda et al. (2023); not faces |
+| Preprocessing, XceptionNet, StatAttack, Celeb-DF | F1 0.8687 undefended → 0.9856 with blur + sharpen (F1, not ASR) | None reported (fixed degradations, not built around the defence) | Zhang et al. (2026) |
 | AT, Dataset, Utility, Model, Backbone transferability benchmark (DUMB) C1 / C3 / C5 / C7 | ASR 85.7 / 68.7 / 53 / 55.8 (no defence; average over PGD, FGSM and FPBA attacks) | PGD AT: 20.2 / 34.2 / 58.4 / 59.9 (same attack average, surrogate-crafted) | Serrano et al. (2026) |
 
 ### RQ 2
@@ -276,6 +277,8 @@ Each abbreviation used above is written in full here, with its type. Definitions
 | DFDC | Deepfake Detection Challenge dataset | **Data** | Larger deepfake video set used in Hussain et al. (2021) and Neekhara et al. (2020). |
 | eKYC-DF | Electronic know-your-customer deepfake set | **Data** | 228,760 videos from three generators (760 real), built for identity verification with head-movement attacker videos and compression levels C0, C23, C40 (Felouat et al., 2024). |
 | H.264 | H.264 video codec | **Data transformation** | Lossy video compression, used as a distribution shift (Hussain et al., 2021). |
+| F1 | F1 score | **Metric** | Harmonic mean of precision and recall; Zhang et al. (2026) report it instead of ASR. |
+| StatAttack | Statistical consistency attack | **Attack method** | Blur, exposure shift and noise applied to fakes so their statistics match real images (as described by Zhang et al., 2026). |
 | FGSM | Fast gradient sign method | **Attack method** | One step: move every pixel by ε in the direction that most increases the detector's loss. Cheap and weak (general practice). |
 | PGD | Projected gradient descent | **Attack method** | FGSM repeated for many small steps, clipped back inside the ε ball. Standard worst-case white-box attack (general practice). |
 | AA | AutoAttack | **Attack method** | Parameter-free ensemble: two new PGD extensions (APGD with cross-entropy and with difference-of-logits-ratio loss) plus the existing FAB and Square Attack; lower robust accuracy than reported in all but one of over 50 models (Croce & Hein, 2020). |
@@ -305,7 +308,8 @@ Each abbreviation used above is written in full here, with its type. Definitions
 10. Jia, C., Wu, Z., Su, C., Liu, H., & Xiao, Y. (2025). Adversarial defense method to face forgery detection based on masked conditional diffusion model. *Expert Systems With Applications*, 287, 128156. https://doi.org/10.1016/j.eswa.2025.128156
 11. Kawa, P., Plata, M., & Syga, P. (2023). Defense against adversarial attacks on audio DeepFake detection. *Interspeech 2023* (read as arXiv:2212.14597v2).
 12. Neekhara, P., Dolhansky, B., Bitton, J., & Canton Ferrer, C. (2020). Adversarial threats to DeepFake detection: A practical perspective. *CVPR Workshops 2021*. https://doi.org/10.1109/cvprw53098.2021.00103 (read as arXiv:2011.09957v1).
-13. Peng, C., Chen, T., Liu, D., Guo, H., Wang, N., & Gao, X. (2025). Revisiting face forgery detection towards generalization. *Neural Networks*, 187, 107310. https://doi.org/10.1016/j.neunet.2025.107310 (survey).
+13. Peng, C., Chen, T., Liu, D., Guo, H., Wang, N., & Gao, X. (2025). Revisiting face forgery detection towards generalization. *Neural Networks*, 187, 107310. https://doi.org/10.1016/j.neunet.2025.107310.
 14. Serrano, A., Umlil, E., & Thomas, R. (2026). Deepfake detectors are DUMB: A benchmark to assess adversarial training robustness under transferability constraints. arXiv:2601.05986v1 (preprint).
 15. Xia, R., Zhou, D., Liu, D., Li, J., Yuan, L., Wang, N., & Gao, X. (2024). Inspector for face forgery detection: Defending against adversarial attacks from coarse to fine. *IEEE TIP*, 33, 4432-4443. https://doi.org/10.1109/TIP.2024.3434388
-16. Zhang, C., Gill, A. Q., Liu, B., & Anwar, M. (2026). AI-based identity fraud detection: A systematic review. *Applied Artificial Intelligence*, 40(1), e2731995. https://doi.org/10.1080/08839514.2026.2731995
+16. Zhang, A., Jeong, S., Kang, H., & Kim, D. D. (2026). Lightweight preprocessing defenses for robust deepfake detection against adversarial perturbations. *WDC '26*. https://doi.org/10.1145/3803629.3803673
+17. Zhang, C., Gill, A. Q., Liu, B., & Anwar, M. (2026). AI-based identity fraud detection: A systematic review. *Applied Artificial Intelligence*, 40(1), e2731995. https://doi.org/10.1080/08839514.2026.2731995
