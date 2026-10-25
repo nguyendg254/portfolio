@@ -31,7 +31,7 @@ Sharing node features or an interclient graph to repair local graphs can leak ot
 
 3. **Rare topologies.**
 
-Fraud typologies (named schemes) are rare and their graph shapes, or topologies, differ (mule chains, star-shaped collection accounts, laundering cycles; the typology list is a personal inference). Labelled fraud is scarce and often arrives after the fraud has happened (Zhang et al., 2026, in identity-fraud detection). Park et al. (2025) report localised fraud patterns diluted in federated gradient boosting. None of the graph papers reviewed tests typology-level rarity.
+A fraud typology is a named scheme (mule chain, star-shaped collection account, laundering cycle; the list is a personal inference). Its topology is the shape it takes in the graph. Rare typologies therefore have rare topologies. Labelled fraud is scarce and often arrives after the fraud has happened (Zhang et al., 2026, in identity-fraud detection). Park et al. (2025) report localised fraud patterns diluted in federated gradient boosting. None of the graph papers reviewed tests typology-level rarity.
 
 4. **Setting extension: entity alignment.**
 
