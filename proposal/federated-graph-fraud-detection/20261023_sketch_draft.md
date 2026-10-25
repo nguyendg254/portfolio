@@ -81,7 +81,7 @@ The three RQs are posed without entity alignment. When entity matching is availa
 3. **Supervised (lowest priority).** A loss on labelled accounts. This version would overlap labelled federated fraud work (Chen et al., 2025; Park et al., 2025), so it has the lowest priority.
 
 
-![Fig. 2 RQ 1 core architecture](figures/fig2_core_architecture.svg)
+![Fig. 2 RQ 1 core architecture](figures/fig2_core_architecture.png)
 
 ### RQ 1 (core): shared structure with relation types, local features
 
@@ -154,7 +154,7 @@ Public or synthetic transaction graphs partitioned into institutions. The datase
 - **Data.** Non-IID partitions by institution size, customers, and fraud-type mix (to be decided). These splits vary customers and class balance; differences in relation types and label definitions need a separate construction (to be decided, for example each institution keeping a different subset of relation types). Three splitting methods are considered. FedGAD's Louvain split cuts the graph along its natural clusters, and its Dirichlet split with β = 0.2 gives each institution an uneven share of the classes; FedGAD uses K = 3 and 5 institutions. The third is He et al.'s LDA method, a similar uneven-class split. FedATH runs its Louvain split at K = 10, 15 and 20 (Fu et al., 2025), which gives a range for scaling the number of institutions. Results are reported separately for each number of institutions.
 - **Ablation.** Share only the structure encoder, all parameters, or nothing, on the same partitions; with and without a local edge evaluator, shared or private (Fu et al., 2025 find a private evaluator better in general, clearly so on Photo and WikiCS).
 
-![Fig. 1 RQ 1 experiment design](figures/fig1_rq1_experiment_design.svg)
+![Fig. 1 RQ 1 experiment design](figures/fig1_rq1_experiment_design.png)
 
 | Baseline | Reported by its authors | Setting | Comparable to this sketch? |
 |---|---|---|---|
